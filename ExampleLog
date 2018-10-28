@@ -1,6 +1,4 @@
-The lines below serves as en example of a log-file that the GROK-rules must be able to handle
 
-```
 #Software: Microsoft Internet Information Services 10.0
 #Version: 1.0
 #Date: 2018-10-28 15:05:23
@@ -12,4 +10,3 @@ The lines below serves as en example of a log-file that the GROK-rules must be a
 2018-10-28 15:06:21 W3SVC1 The-SERVER ::1 GET / - 80 - ::1 HTTP/1.1 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/70.0.3538.77+Safari/537.36 - - localhost 200 0 0 960 445 3
 2018-10-28 15:06:21 W3SVC1 The-SERVER ::1 GET /iisstart.png - 80 - ::1 HTTP/1.1 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/70.0.3538.77+Safari/537.36 - http://localhost/ localhost 200 0 0 99024 383 1
 2018-10-28 15:06:21 W3SVC1 The-SERVER ::1 GET /favicon.ico - 80 - ::1 HTTP/1.1 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/70.0.3538.77+Safari/537.36 - http://localhost/ localhost 404 0 2 5038 425 1
-```
