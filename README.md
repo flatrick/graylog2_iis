@@ -27,7 +27,7 @@ If you wish to change the path to where the logs are stored, edit the command be
 
 |Swedish name|Field-name according to logfile|GROK
 |-|-|-|
-|Datum|date|
+|Datum|date|(date+time is handled by the rule below)
 |Tid|time|%{TIMESTAMP_ISO8601:log_timestamp}
 |Servicenamn|s-sitename|%{WORD:S-SiteName}
 |Servernamn|s-computername|%{NOTSPACE:S-ComputerName}
