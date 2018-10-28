@@ -1,0 +1,15 @@
+The lines below serves as en example of a log-file that the GROK-rules must be able to handle
+
+```
+#Software: Microsoft Internet Information Services 10.0
+#Version: 1.0
+#Date: 2018-10-28 15:05:23
+#Fields: date time s-sitename s-computername s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs-version cs(User-Agent) cs(Cookie) cs(Referer) cs-host sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
+2018-10-28 15:05:23 W3SVC1 The-SERVER ::1 GET / X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=4cc83f74-984b-4a5f-8e53-f2cbb9b44dec 80 - ::1 HTTP/1.1 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/70.0.3538.77+Safari/537.36 - - localhost:8080 502 3 12029 4975 419 2404
+2018-10-28 15:05:27 W3SVC1 The-SERVER ::1 GET /favicon.ico X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=5b87ff47-04da-475d-b34d-77fa29b42a85 80 - ::1 HTTP/1.1 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/70.0.3538.77+Safari/537.36 - http://localhost/ localhost:8080 502 3 12029 4998 382 4009
+2018-10-28 15:06:06 W3SVC1 The-SERVER ::1 GET / X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=b607dccf-5095-4cfb-8571-28a85a67a588 80 - ::1 HTTP/1.1 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/70.0.3538.77+Safari/537.36 - - localhost:8080 502 3 12029 4975 445 4006
+2018-10-28 15:06:10 W3SVC1 The-SERVER ::1 GET /favicon.ico X-ARR-CACHE-HIT=0&X-ARR-LOG-ID=4412e3b0-c8bb-456f-8726-b8ffceddf887 80 - ::1 HTTP/1.1 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/70.0.3538.77+Safari/537.36 - http://localhost/ localhost:8080 502 3 12029 4998 425 4009
+2018-10-28 15:06:21 W3SVC1 The-SERVER ::1 GET / - 80 - ::1 HTTP/1.1 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/70.0.3538.77+Safari/537.36 - - localhost 200 0 0 960 445 3
+2018-10-28 15:06:21 W3SVC1 The-SERVER ::1 GET /iisstart.png - 80 - ::1 HTTP/1.1 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/70.0.3538.77+Safari/537.36 - http://localhost/ localhost 200 0 0 99024 383 1
+2018-10-28 15:06:21 W3SVC1 The-SERVER ::1 GET /favicon.ico - 80 - ::1 HTTP/1.1 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/70.0.3538.77+Safari/537.36 - http://localhost/ localhost 404 0 2 5038 425 1
+```
