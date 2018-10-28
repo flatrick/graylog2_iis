@@ -3,7 +3,8 @@ Configuration to get IIS logs into Graylog with each field extracted
 
 ## Currently missing
 
-I haven't handled `C:/Windows/System32/LogFiles/HTTPERR/*.log` yet
+I haven't handled `C:/Windows/System32/LogFiles/HTTPERR/*.log` yet.
+https://support.microsoft.com/en-us/help/820729/error-logging-in-http-apis
 
 # Configure IIS to get the logs in the correct format
 
