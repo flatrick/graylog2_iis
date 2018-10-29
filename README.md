@@ -3,8 +3,8 @@ Configuration to get IIS logs into Graylog with each field extracted
 
 ## Currently missing
 
-I haven't handled `C:/Windows/System32/LogFiles/HTTPERR/*.log` yet.
-https://support.microsoft.com/en-us/help/820729/error-logging-in-http-apis
+I haven't handled `C:/Windows/System32/LogFiles/HTTPERR/*.log` yet. 
+ https://support.microsoft.com/en-us/help/820729/error-logging-in-http-apis 
 
 # Configure IIS to get the logs in the correct format
 
@@ -23,11 +23,38 @@ If you wish to change the path to where the logs are stored, edit the command be
 %windir%\system32\inetsrv\appcmd.exe set config -section:system.applicationHost/sites -siteDefaults.logfile.directory:"%SystemDrive%\inetpub\logs\LogFiles"
 ```
 
-# GROK
+# Graylog
+
+## Collector
+
+### Beats Input
+
+|Setting|Value
+|-|-|
+|Path to logfile|`['C:\inetpub\logs\LogFiles\*\*.log']`
+|Encoding|`utf-8`
+|Type of input file|`iis`
+|Lines that you want Filebeat to exclude|`['^#']`
+
+## Inputs
+
+### Manage extractors
+
+|Setting|Choice|Value
+|-|-|-|
+|Condition|Only attempt extraction if field matches regular expression|`W3SVC`
+
+GROK-pattern
 
 ```
 %{TIMESTAMP_ISO8601:log_timestamp} %{WORD:S-SiteName} %{HOSTNAME:S-ComputerName} %{IPORHOST:S-IP} %{WORD:CS-Method} %{URIPATH:CS-URI-Stem} %{NOTSPACE:CS-URI-Query} %{NUMBER:S-Port} %{NOTSPACE:CS-Username} %{IPORHOST:C-IP} %{NOTSPACE:CS-Version} %{NOTSPACE:CS-UserAgent} %{NOTSPACE:CS-Cookie} %{NOTSPACE:CS-Referer} %{NOTSPACE:CS-Host} %{NUMBER:SC-Status} %{NUMBER:SC-SubStatus} %{NUMBER:SC-Win32-Status} %{NUMBER:SC-Bytes} %{NUMBER:CS-Bytes} %{NUMBER:Time-Taken}
 ```
+
+
+# Info
+
+ http://www.nsi.bg/nrnm/Help/iisHelp/iis/htm/core/iiintlg.htm 
+ https://docs.microsoft.com/en-us/windows/desktop/http/w3c-logging 
 
 |Swedish name|Field-name according to logfile|GROK
 |-|-|-|
