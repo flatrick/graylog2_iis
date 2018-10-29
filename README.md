@@ -53,6 +53,36 @@ If you wish to change the path to where the logs are stored, edit the command be
 |Extraction strategy|Copy
 |Extractor title|IIS-WC3 Full
 
+## Pipelines
+
+### Correct timestamps
+
+*For this rule to work, __Pipeline Processor__ must run after __Message Filter Chain__ (edit this under __System - Configuration__ by pressing __Update__ below the table showing the current order and move __Pipeline Processor__ to after __Message Filter Chain__*
+
+This rule will 
+- read all messages that are of type __iis__ and contains the field __log_timestamp__
+- parse the field to add it's correct timezone (UTC)
+- save the field with "Europe/Stockholm" as timezone in the format: yyyy-MM-dd HH:mm:ss +0100 (non-DST, +0200 when DST is in effect)
+
+```
+rule "correct IIS-log timestamp"
+when
+    contains(
+            value: to_string($message.type), 
+            search: "iis",
+            ignore_case: true)
+    AND has_field(field: "log_timestamp")
+then
+    let new_date = format_date(
+                        value: parse_date(
+                            value: to_string($message.log_timestamp),
+                            pattern: "yyyy-MM-dd HH:mm:ss",
+                            timezone: "UTC"),
+                        format: "yyyy-MM-dd HH:mm:ss Z",
+                        timezone: "Europe/Stockholm");
+    set_field("log_timestamp", new_date);
+end
+```
 
 # Info
 
