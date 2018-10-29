@@ -52,7 +52,7 @@ If you wish to change the path to where the logs are stored, edit the command be
 
 ## Pipelines
 
-### Correct timestamps
+### Correct log_timestamps
 
 *For this rule to work, __Pipeline Processor__ must run after __Message Filter Chain__ (edit this under __System - Configuration__ by pressing __Update__ below the table showing the current order and move __Pipeline Processor__ to after __Message Filter Chain__*
 
@@ -78,6 +78,27 @@ then
                         format: "yyyy-MM-dd HH:mm:ss Z",
                         timezone: "Europe/Stockholm");
     set_field("log_timestamp", new_date);
+end
+```
+
+### Set timestamps to timestamps from log, not from time of harvest
+
+I have not been able to get this one to work quite yet, for some reason the datetime-format becomes wrong and it can't save it.
+
+__"For rule 'correct event timestamp': In call to function 'parse_date' at 5:24 an exception was thrown: Invalid format: "2018-10-29 16:24:22 +0100" is malformed at " +0100""__
+
+```
+rule "correct event timestamp"
+when
+    true
+then
+    let new_timestamp = parse_date(
+                                value: to_string($message.log_timestamp),
+                                pattern: "yyyy-MM-dd HH:mm:ss",
+                                timezone: "UTC");
+    set_field("timestamp", format_date(
+								value: new_timestamp,
+								format: "yyyy-MM-dd'T'hh:mm:ss.SSSZ"));
 end
 ```
 
