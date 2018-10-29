@@ -3,8 +3,11 @@ Configuration to get IIS logs into Graylog with each field extracted
 
 ## Currently missing
 
-* I haven't handled `C:/Windows/System32/LogFiles/HTTPERR/*.log` yet. [Error logging in HTTP APIs](https://support.microsoft.com/en-us/help/820729/error-logging-in-http-apis) 
-* Also missing a way to handle incorrect timezone for timestamps (IIS always stores datetime in UTC).
+- I haven't handled `C:/Windows/System32/LogFiles/HTTPERR/*.log` yet. 
+- - [Error logging in HTTP APIs](https://support.microsoft.com/en-us/help/820729/error-logging-in-http-apis) 
+- Also missing a way to handle incorrect timezone for timestamps (IIS always stores datetime in UTC).
+- - [Graylog - Functions - parse_date()](http://docs.graylog.org/en/2.2/pages/pipelines/functions.html#parse-date) 
+- - [Time Zone](https://www.joda.org/joda-time/timezones.html) 
 
 # Configure IIS to get the logs in the correct format
 
