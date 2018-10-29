@@ -83,22 +83,21 @@ end
 
 ### Set timestamps to timestamps from log, not from time of harvest
 
-I have not been able to get this one to work quite yet, for some reason the datetime-format becomes wrong and it can't save it.
-
-__"For rule 'correct event timestamp': In call to function 'parse_date' at 5:24 an exception was thrown: Invalid format: "2018-10-29 16:24:22 +0100" is malformed at " +0100""__
+The rule doesn't give any errors anymore, but it doesn't change the value for the field __timestamp__ for some reason.
 
 ```
-rule "correct event timestamp"
+rule "replace harvesting-timestamp with actual timestamp from log"
 when
-    true
+    contains(
+            value: to_string($message.type), 
+            search: "iis",
+            ignore_case: true)
 then
-    let new_timestamp = parse_date(
-                                value: to_string($message.log_timestamp),
-                                pattern: "yyyy-MM-dd HH:mm:ss",
-                                timezone: "UTC");
     set_field("timestamp", format_date(
-								value: new_timestamp,
-								format: "yyyy-MM-dd'T'hh:mm:ss.SSSZ"));
+				value: parse_date(
+						value: to_string($message.log_timestamp),
+						pattern: "yyyy-MM-dd HH:mm:ss Z"),
+				format:"yyyy-MM-dd'T'hh:mm:ss.SSSZ"));		
 end
 ```
 
