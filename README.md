@@ -36,7 +36,8 @@ You might need to set a __bind_adress__ _(what IP this Input will be listening o
 
 ### Manage extractors
 
-Before we continue to another part of the configuration, click __Manage extractors__ and create the rule below.
+Before we can create our extractor, we need some events in our input, so return to this step when you have recieved your first message and click __Manage extractors__ to create the rule below. 
+Or you can import the extractor by copying the JSON-formatted message below this table, then you don't have to wait until a message has been harvested/saved in Graylog/Elasticsearch.
 
 |Setting|Choice
 |-|-|
@@ -47,6 +48,29 @@ Before we continue to another part of the configuration, click __Manage extracto
 |Field matches regular expression|`W3SVC`
 |Extraction strategy|Copy
 |Extractor title|IIS-WC3 Full
+
+```json
+{
+  "extractors": [
+    {
+      "title": "IIS-WC3 Full",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 0,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{TIMESTAMP_ISO8601:log_timestamp} %{WORD:serviceName} %{SERVERNAME:serverName} %{IP:serverIP} %{WORD:method} %{URIPATH:uriStem} %{NOTSPACE:uriQuery} %{NUMBER:port} %{NOTSPACE:username} %{IPORHOST:clientIP} %{NOTSPACE:protocolVersion} %{NOTSPACE:userAgent} %{NOTSPACE:cookie} %{NOTSPACE:referer} %{NOTSPACE:requestHost} %{NUMBER:response} %{NUMBER:subresponse} %{NUMBER:win32response} %{NUMBER:bytesSent} %{NUMBER:bytesReceived} %{NUMBER:timetaken}",
+        "named_captures_only": false
+      },
+      "condition_type": "string",
+      "condition_value": "W3SVC"
+    }
+  ],
+  "version": "2.4.6"
+}
+```
 
 ## Collector
 
