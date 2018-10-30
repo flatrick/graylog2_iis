@@ -1,10 +1,11 @@
 # graylog2_iis
 Configuration to get IIS logs into Graylog with each field extracted
 
-## Currently missing
+## Currently missing or not working
 
 - I haven't handled `C:/Windows/System32/LogFiles/HTTPERR/*.log` yet. 
 - - [Error logging in HTTP APIs](https://support.microsoft.com/en-us/help/820729/error-logging-in-http-apis) 
+- For whatever reason, I'm unable to overwrite the field timestamp
 
 # Configure IIS to get the logs in the correct format
 
