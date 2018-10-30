@@ -1,5 +1,6 @@
 # graylog2_iis
-Configuration to get IIS logs into Graylog with each field extracted
+Configuration to get IIS logs into Graylog using Graylog collector-sidecar (FileBeats), after which all fields are extracted from the message into searchable fields.
+In this example, the field log_timestamp is also converted from unmarked UTC to Europe/Stockholm.
 
 ## Currently missing or not working
 
@@ -26,20 +27,16 @@ If you wish to change the path to where the logs are stored, edit the command be
 
 # Graylog
 
-## Collector
+## Input
 
-### Beats Input
-
-|Setting|Value
-|-|-|
-|Path to logfile|`['C:\inetpub\logs\LogFiles\*\*.log']`
-|Encoding|`utf-8`
-|Type of input file|`iis`
-|Lines that you want Filebeat to exclude|`['^#']`
-
-## Inputs
+For this configuration to work, we'll need to setup a Beats-input.
+Select __Beats__ and click __Launch new input__ if you don't already have one you want to use.
+You will not need to enter any special configuration here to get it running, but keep track of what port the Input is listening on.
+You might need to set a __bind_adress__ _(what IP this Input will be listening on)_.
 
 ### Manage extractors
+
+Before we continue to another part of the configuration, click __Manage extractors__ and create the rule below.
 
 |Setting|Choice
 |-|-|
@@ -50,6 +47,17 @@ If you wish to change the path to where the logs are stored, edit the command be
 |Field matches regular expression|`W3SVC`
 |Extraction strategy|Copy
 |Extractor title|IIS-WC3 Full
+
+## Collector
+
+### Beats Input
+
+|Setting|Value
+|-|-|
+|Path to logfile|`['C:\inetpub\logs\LogFiles\*\*.log']`
+|Encoding|`utf-8`
+|Type of input file|`iis`
+|Lines that you want Filebeat to exclude|`['^#']`
 
 ## Pipelines
 
