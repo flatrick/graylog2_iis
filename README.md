@@ -36,8 +36,13 @@ You might need to set a __bind_adress__ _(what IP this Input will be listening o
 
 ### Manage extractors
 
-Before we can create our extractor, we need some events in our input, so return to this step when you have recieved your first message and click __Manage extractors__ to create the rule below. 
-Or you can import the extractor by copying the JSON-formatted message below this table, then you don't have to wait until a message has been harvested/saved in Graylog/Elasticsearch.
+If we want to creat our extactor through the GUI, we will need events in our stream first.
+You can however import extractors before that if you have an export of the extractor you want to import.  
+Below, I've described how to do it both ways.  
+  
+* _Before we can create our extractor, we need some events in our input_, so return to this step when you have recieved your first message and click __Manage extractors__.  
+Then click on __Get started__ to create the extractor described in the table below.  
+* Or you can import the extractor by clicking on __Actions__ and then __Import extractors__, then copy the JSON-formatted message below this table, _then you don't have to wait until a message has been harvested/saved in Graylog/Elasticsearch._
 
 |Setting|Choice
 |-|-|
@@ -49,6 +54,7 @@ Or you can import the extractor by copying the JSON-formatted message below this
 |Extraction strategy|Copy
 |Extractor title|IIS-WC3 Full
 
+_The JSON-formatted importable extractor_
 ```json
 {
   "extractors": [
