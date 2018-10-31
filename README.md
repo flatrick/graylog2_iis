@@ -6,6 +6,7 @@ In this example, the field log_timestamp is also converted from unmarked UTC to 
 
 - I haven't handled `C:/Windows/System32/LogFiles/HTTPERR/*.log` yet. 
 - - [Error logging in HTTP APIs](https://support.microsoft.com/en-us/help/820729/error-logging-in-http-apis) 
+- Since I've named some of the fields from the access-logs with generic names (PORT for s-port/server-port), when I'm now trying to add a GROK-pattern for the error-file I've found that I now need to rename the previous ones for it to make sense together.
 
 # Configure IIS to get the logs in the correct format
 
@@ -136,7 +137,12 @@ end
 
 By adding the keyword __;int__ at the end of grok-patterns, we're telling Graylog that this field is to be stored as integers, without this hint, it'll most certainly store it as a string and then statistics won't work on those fields.
 
-## Extended W3C
+## Comparison of the two different log-files for IIS
+
+- #Fields: date time s-sitename s-computername s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs-version cs(User-Agent) cs(Cookie) cs(Referer) cs-host sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
+- #Fields: date time c-ip c-port s-ip s-port cs-version cs-method cs-uri streamid sc-status s-siteid s-reason s-queuename
+
+### Access-log (Extended W3C)
 
 |Swedish name|Field-name according to logfile|GROK
 |-|-|-|
@@ -163,7 +169,7 @@ By adding the keyword __;int__ at the end of grok-patterns, we're telling Graylo
 |Mottagna bytes|cs-bytes|%{NUMBER:CS-Bytes;int}
 |Tidsåtgång|time-taken|%{NUMBER:Time-Taken;int}
 
-## Error logging in HTTP APIs
+### Error logs
 
 |Swedish name|Fieldname|GROK|
 |-|-|-|
