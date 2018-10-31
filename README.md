@@ -90,7 +90,7 @@ _The JSON-formatted importable extractor_
 
 ## Pipelines
 
-### Correct log_timestamps
+### Set correct time for log_timestamps
 
 *For this rule to work, __Pipeline Processor__ must run after __Message Filter Chain__ (edit this under __System - Configuration__ by pressing __Update__ below the table showing the current order and move __Pipeline Processor__ to after __Message Filter Chain__*
 
@@ -100,44 +100,47 @@ This rule will
 - save the field with "Europe/Stockholm" as timezone in the format: yyyy-MM-dd HH:mm:ss +0100 (non-DST, +0200 when DST is in effect)
 
 ```
-rule "correct IIS log_timestamp"
+rule "Set correct IIS log_timestamp"
 when
-    contains(
+	contains(
             value: to_string($message.type), 
             search: "iis",
             ignore_case: true)
-    AND has_field(field: "log_timestamp")
+	AND has_field(field: "log_timestamp")
 then
-    let set_timezone = parse_date(
-								value: to_string($message.log_timestamp),
-								pattern: "yyyy-MM-dd HH:mm:ss",
-								timezone: "UTC");
+	let set_timezone = parse_date(
+				value: to_string($message.log_timestamp),
+				pattern: "yyyy-MM-dd HH:mm:ss",
+				timezone: "UTC");
 	let correct_timestamp = format_date(
-								value: set_timezone,
-								format: "yyyy-MM-dd HH:mm:ss Z",
-								timezone: "Europe/Stockholm");
+					value: set_timezone,
+					format: "yyyy-MM-dd HH:mm:ss Z",
+					timezone: "Europe/Stockholm");
     set_field("log_timestamp", correct_timestamp);
 end
 ```
 
-### Set timestamps to timestamps from log, not from time of harvest
+### Set timestamp to the timestamp from the logfile
 
-*For this rule to work, __Pipeline Processor__ must run after __Message Filter Chain__ (edit this under __System - Configuration__ by pressing __Update__ below the table showing the current order and move __Pipeline Processor__ to after __Message Filter Chain__*
+*For this rule to work, __Pipeline Processor__ must run after __Message Filter Chain__ (edit this under __System - Configuration__ by pressing __Update__ below the table showing the current order and move __Pipeline Processor__ to after __Message Filter Chain__*  
 
+This rule will:
+- Use the field log_timestamp as a source for the correct time
+- Convert/parse log_timestamp into a format Graylog2 can store
+- And finallly store the data.
 
 ```
-rule "correct timestamp for logs from IIS"
+rule "Set timestamp to timestamp from IIS own log-file"
 when
-    contains(
+	contains(
             value: to_string($message.type), 
             search: "iis",
             ignore_case: true)
-    AND has_field(field: "log_timestamp")
+	AND has_field(field: "log_timestamp")
 then
-    let log_timestamp = $message.log_timestamp;
+	let log_timestamp = $message.log_timestamp;
 	let new_timestamp = parse_date( value: to_string(log_timestamp),
-									pattern: "yyyy-MM-dd HH:mm:ss Z");
-								
+					pattern: "yyyy-MM-dd HH:mm:ss Z");						
 	set_field("timestamp", new_timestamp);
 end
 ```
