@@ -136,6 +136,8 @@ end
 
 By adding the keyword __;int__ at the end of grok-patterns, we're telling Graylog that this field is to be stored as integers, without this hint, it'll most certainly store it as a string and then statistics won't work on those fields.
 
+## Extended W3C
+
 |Swedish name|Field-name according to logfile|GROK
 |-|-|-|
 |Datum|date|(date+time is handled by the rule below)
@@ -160,3 +162,21 @@ By adding the keyword __;int__ at the end of grok-patterns, we're telling Graylo
 |Skickade bytes|sc-bytes|%{NUMBER:SC-Bytes;int}
 |Mottagna bytes|cs-bytes|%{NUMBER:CS-Bytes;int}
 |Tidsåtgång|time-taken|%{NUMBER:Time-Taken;int}
+
+## Error logging in HTTP APIs
+
+|Swedish name|Fieldname|GROK|
+|-|-|-|
+||date time|%{TIMESTAMP_ISO8601:log_timestamp}
+||c-ip|%{IPORHOST:clientIP}
+||c-port|%{NUMBER:port;int}
+||s-ip|%{IP:serverIP}
+||s-port|%{NUMBER:port;int}
+||cs-version|%{NOTSPACE:CS-Version}
+||cs-method|%{WORD:method}
+||cs-uri|%{URI:URI}
+||streamid|?
+||sc-status|%{NUMBER:SC-Status;int}
+||s-siteid|?
+||s-reason|?
+||s-queuename|?
