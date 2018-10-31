@@ -122,6 +122,7 @@ end
 
 ### Set timestamps to timestamps from log, not from time of harvest
 
+*For this rule to work, __Pipeline Processor__ must run after __Message Filter Chain__ (edit this under __System - Configuration__ by pressing __Update__ below the table showing the current order and move __Pipeline Processor__ to after __Message Filter Chain__*
 The rule doesn't give any errors anymore, but it doesn't change the value for the field __timestamp__ for some reason.
 
 ```
