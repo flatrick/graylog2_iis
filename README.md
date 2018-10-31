@@ -104,9 +104,10 @@ This rule will
 - read all messages that are of type __iis__ and contains the field __log_timestamp__
 - parse the field to add it's correct timezone (UTC)
 - save the field with "Europe/Stockholm" as timezone in the format: yyyy-MM-dd HH:mm:ss +0100 (non-DST, +0200 when DST is in effect)
+- save the correct timestamp in the field timestamp as well to improve searching/indexing instead of storing time of ingestion by Filebeats
 
 ```
-rule "Set correct IIS log_timestamp"
+rule "Set correct IIS log_timestamp and timestamp"
 when
 	contains(
             value: to_string($message.type), 
@@ -122,34 +123,8 @@ then
 					value: set_timezone,
 					format: "yyyy-MM-dd HH:mm:ss Z",
 					timezone: "Europe/Stockholm");
-    set_field("log_timestamp", correct_timestamp);
-end
-```
-
-### Set timestamp to the timestamp from the logfile
-
-For the the second __Stage__ _(Stage 1)_, we will set the timestamp we just corrected in Stage 0 _(Graylog will store it in UTC-format)_
-
-*For this rule to work, __Pipeline Processor__ must run after __Message Filter Chain__ (edit this under __System - Configuration__ by pressing __Update__ below the table showing the current order and move __Pipeline Processor__ to after __Message Filter Chain__*  
-
-This rule will:
-- Use the field log_timestamp as a source for the correct time
-- Convert/parse log_timestamp into a format Graylog2 can store
-- And finallly store the data.
-
-```
-rule "Set timestamp to timestamp from IIS own log-file"
-when
-	contains(
-            value: to_string($message.type), 
-            search: "iis",
-            ignore_case: true)
-	AND has_field(field: "log_timestamp")
-then
-	let log_timestamp = $message.log_timestamp;
-	let new_timestamp = parse_date( value: to_string(log_timestamp),
-					pattern: "yyyy-MM-dd HH:mm:ss Z");						
-	set_field("timestamp", new_timestamp);
+	set_field("log_timestamp", correct_timestamp);
+	set_field("timestamp", set_timezone);
 end
 ```
 
