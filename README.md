@@ -35,11 +35,11 @@ You might need to set a __bind_adress__ _(what IP this Input will be listening o
 
 ### Manage extractors
 
-If we want to creat our extactor through the GUI, we will need events in our stream first.
+If we want to create our extactor through the GUI, we will need events in our stream first.
 You can however import extractors before that if you have an export of the extractor you want to import.  
 Below, I've described how to do it both ways.  
   
-* _Before we can create our extractor, we need some events in our input_, so return to this step when you have recieved your first message and click __Manage extractors__.  
+* _Before we can create our extractor, we need some events in our input_, so return to this step when you have received your first message and then click __Manage extractors__.  
 Then click on __Get started__ to create the extractor described in the table below.  
 * Or you can import the extractor by clicking on __Actions__ and then __Import extractors__, then copy the JSON-formatted message below this table, _then you don't have to wait until a message has been harvested/saved in Graylog/Elasticsearch._
 
@@ -90,21 +90,22 @@ _The JSON-formatted importable extractor_
 
 ## Pipelines
 
-In this example, I'm using two rules in two stages;
-1. The first one modifies the value log_timestamp so it's stored as a datetime object containing also containing timezone, I also change the timezone to my local timezone to make it easier to read
-1. The second pipeline uses the now corrected log_timestamp as a source to set the field timestamp, otherwise timestamp will be referring to when Filebeats sent the event to Graylog and not when it actually happened. Since IIS can wait a while before writing to it's logfile, this means that the data we get will be slightly unreliable (and/or if Filebeat for whatever reason wasn't running for a while, all of the new events that it'll send later will have the same timestamp, even though the events could be from different days!)
+In this example, I'm using one rule in one stage;
+1. It first modifies the value log_timestamp so it's stored as a datetime object, which means it also contains the timezone
+1. Then I change the timezone to my local timezone to make it easier to read for possible alerts in the future and store it in __log_timestamp__
+1. Lastly, using the corrected __log_timestamp__ as a source I set the field __timestamp__ to be the same but in UTC.
 
-### Set correct time for log_timestamps
+If I don't do the last step, __timestamp__ will be referring to when Filebeat sent the event to Graylog and not when it actually happened. Since IIS can wait a while before writing to it's logfile, this means that the timestamp we get would always be slightly incorrect (and/or if Filebeat for whatever reason wasn't running for a while, all of the new events that it'll send will have the same timestamp for all events, even though the events could be from different days).
 
-For the the first __Stage__ _(Stage 0)_, we will set the log_timestamp with the time converted to our own timezone _(Europe/Stockolm)_.
+### Set correct time for log_timestamp and timestamp
 
 *For this rule to work, __Pipeline Processor__ must run after __Message Filter Chain__ (edit this under __System - Configuration__ by pressing __Update__ below the table showing the current order and move __Pipeline Processor__ to after __Message Filter Chain__*
 
 This rule will 
 - read all messages that are of type __iis__ and contains the field __log_timestamp__
-- parse the field to add it's correct timezone (UTC)
+- parse the field __log_timestamp__ to add it's correct timezone (UTC)
 - save the field with "Europe/Stockholm" as timezone in the format: yyyy-MM-dd HH:mm:ss +0100 (non-DST, +0200 when DST is in effect)
-- save the correct timestamp in the field timestamp as well to improve searching/indexing instead of storing time of ingestion by Filebeats
+- save the correct timestamp in the field timestamp as well to improve searching/indexing instead of storing time of ingestion by Filebeat
 
 ```
 rule "Set correct IIS log_timestamp and timestamp"
@@ -133,7 +134,7 @@ end
 - http://www.nsi.bg/nrnm/Help/iisHelp/iis/htm/core/iiintlg.htm 
 - https://docs.microsoft.com/en-us/windows/desktop/http/w3c-logging 
 
-By adding the keyword ;int at the end of grok-patterns, we're telling Graylog that this field is to be stored as integers, without this hint, it'll probably store it as a string and then statistics won't work on those fields.
+By adding the keyword __;int__ at the end of grok-patterns, we're telling Graylog that this field is to be stored as integers, without this hint, it'll most certainly store it as a string and then statistics won't work on those fields.
 
 |Swedish name|Field-name according to logfile|GROK
 |-|-|-|
