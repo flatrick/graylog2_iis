@@ -101,7 +101,7 @@ This rule will
 - save the field with "Europe/Stockholm" as timezone in the format: yyyy-MM-dd HH:mm:ss +0100 (non-DST, +0200 when DST is in effect)
 
 ```
-rule "correct IIS-log timestamp"
+rule "correct IIS log_timestamp"
 when
     contains(
             value: to_string($message.type), 
@@ -109,14 +109,14 @@ when
             ignore_case: true)
     AND has_field(field: "log_timestamp")
 then
-    let new_date = format_date(
-                        value: parse_date(
-                            value: to_string($message.log_timestamp),
-                            pattern: "yyyy-MM-dd HH:mm:ss",
-                            timezone: "UTC"),
-                        format: "yyyy-MM-dd HH:mm:ss Z",
-                        timezone: "Europe/Stockholm");
-    set_field("log_timestamp", new_date);
+    let correct_timestamp = parse_date(
+								value: to_string($message.log_timestamp),
+								pattern: "yyyy-MM-dd HH:mm:ss",
+								timezone: "UTC");
+    set_field("log_timestamp", format_date(
+								value: correct_timestamp,
+								format: "yyyy-MM-dd HH:mm:ss Z",
+								timezone: "Europe/Stockholm"));
 end
 ```
 
@@ -126,18 +126,32 @@ end
 The rule doesn't give any errors anymore, but it doesn't change the value for the field __timestamp__ for some reason.
 
 ```
-rule "replace harvesting-timestamp with actual timestamp from log"
+rule "correct timestamp for logs from IIS"
 when
     contains(
             value: to_string($message.type), 
             search: "iis",
             ignore_case: true)
+    AND has_field(field: "log_timestamp")
 then
-    set_field("timestamp", format_date(
-				value: parse_date(
-						value: to_string($message.log_timestamp),
-						pattern: "yyyy-MM-dd HH:mm:ss Z"),
-				format:"yyyy-MM-dd'T'hh:mm:ss.SSSZ"));		
+    let log_timestamp = $message.log_timestamp;
+    let timestamp = $message.timestamp;
+    debug(value: concat(
+                    first: "timestamp before changing: ",
+                    second: to_string(timestamp)));
+	debug(value: concat(
+                    first: "log_timestamp: ",
+                    second: to_string(log_timestamp)));
+					
+	set_field("timestamp", format_date(
+								value: to_date(log_timestamp),
+								format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+	
+	debug(value: concat(
+                    first: "After changing: ",
+	                second: format_date(
+								value: to_date(timestamp),
+								format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ")));
 end
 ```
 
