@@ -130,8 +130,10 @@ end
 
 # Info
 
- http://www.nsi.bg/nrnm/Help/iisHelp/iis/htm/core/iiintlg.htm 
- https://docs.microsoft.com/en-us/windows/desktop/http/w3c-logging 
+- http://www.nsi.bg/nrnm/Help/iisHelp/iis/htm/core/iiintlg.htm 
+- https://docs.microsoft.com/en-us/windows/desktop/http/w3c-logging 
+
+By adding the keyword ;int at the end of grok-patterns, we're telling Graylog that this field is to be stored as integers, without this hint, it'll probably store it as a string and then statistics won't work on those fields.
 
 |Swedish name|Field-name according to logfile|GROK
 |-|-|-|
@@ -143,7 +145,7 @@ end
 |Metod|cs-method|%{WORD:CS-Method}
 |URI-stam|cs-uri-stem|%{URIPATH:CS-URI-Stem}
 |URI-fråga|cs-uri-query|%{NOTSPACE:CS-URI-Query}
-|Server-port|s-port|%{NUMBER:S-Port}
+|Server-port|s-port|%{NUMBER:S-Port;int}
 |Användarnamn|cs-username|%{NOTSPACE:CS-Username}
 |IP-adress för klient|c-ip|%{IPORHOST:C-IP}
 |Protokollversion|cs-version|%{NOTSPACE:CS-Version}
@@ -151,9 +153,9 @@ end
 |Cookie|cs(Cookie)|%{NOTSPACE:CS-Cookie}
 |Referenssida|cs(Referer)|%{NOTSPACE:CS-Referer}
 |Värd|cs-host|%{NOTSPACE:CS-Host}
-|Protokollstatus|sc-status|%{NUMBER:SC-Status}
-|Understatus för protokoll|sc-substatus|%{NUMBER:SC-SubStatus}
-|Win32-Status|sc-win32-status|%{NUMBER:SC-Win32-Status}
-|Skickade bytes|sc-bytes|%{NUMBER:SC-Bytes}
-|Mottagna bytes|cs-bytes|%{NUMBER:CS-Bytes}
-|Tidsåtgång|time-taken|%{NUMBER:Time-Taken}
+|Protokollstatus|sc-status|%{NUMBER:SC-Status;int}
+|Understatus för protokoll|sc-substatus|%{NUMBER:SC-SubStatus;int}
+|Win32-Status|sc-win32-status|%{NUMBER:SC-Win32-Status;int}
+|Skickade bytes|sc-bytes|%{NUMBER:SC-Bytes;int}
+|Mottagna bytes|cs-bytes|%{NUMBER:CS-Bytes;int}
+|Tidsåtgång|time-taken|%{NUMBER:Time-Taken;int}
