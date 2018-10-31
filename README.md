@@ -47,7 +47,7 @@ Then click on __Get started__ to create the extractor described in the table bel
 |-|-|
 |Extractor type|Grok pattern
 |Source field|message
-|Grok pattern|`%{TIMESTAMP_ISO8601:log_timestamp} %{WORD:S-SiteName} %{HOSTNAME:S-ComputerName} %{IPORHOST:S-IP} %{WORD:CS-Method} %{URIPATH:CS-URI-Stem} %{NOTSPACE:CS-URI-Query} %{NUMBER:S-Port} %{NOTSPACE:CS-Username} %{IPORHOST:C-IP} %{NOTSPACE:CS-Version} %{NOTSPACE:CS-UserAgent} %{NOTSPACE:CS-Cookie} %{NOTSPACE:CS-Referer} %{NOTSPACE:CS-Host} %{NUMBER:SC-Status} %{NUMBER:SC-SubStatus} %{NUMBER:SC-Win32-Status} %{NUMBER:SC-Bytes} %{NUMBER:CS-Bytes} %{NUMBER:Time-Taken}`
+|Grok pattern|`%{TIMESTAMP_ISO8601:log_timestamp} %{WORD:serviceName} %{SERVERNAME:serverName} %{IP:serverIP} %{WORD:method} %{URIPATH:uriStem} %{NOTSPACE:uriQuery} %{NUMBER:port;int} %{NOTSPACE:username} %{IPORHOST:clientIP} %{NOTSPACE:protocolVersion} %{NOTSPACE:userAgent} %{NOTSPACE:cookie} %{NOTSPACE:referer} %{NOTSPACE:requestHost} %{NUMBER:response;int} %{NUMBER:subresponse;int} %{NUMBER:win32response;int} %{NUMBER:bytesSent;int} %{NUMBER:bytesReceived;int} %{NUMBER:timetaken;int}`
 |Condition|Only attempt extraction if field matches regular expression
 |Field matches regular expression|`W3SVC`
 |Extraction strategy|Copy
@@ -66,7 +66,7 @@ _The JSON-formatted importable extractor_
       "source_field": "message",
       "target_field": "",
       "extractor_config": {
-        "grok_pattern": "%{TIMESTAMP_ISO8601:log_timestamp} %{WORD:serviceName} %{SERVERNAME:serverName} %{IP:serverIP} %{WORD:method} %{URIPATH:uriStem} %{NOTSPACE:uriQuery} %{NUMBER:port} %{NOTSPACE:username} %{IPORHOST:clientIP} %{NOTSPACE:protocolVersion} %{NOTSPACE:userAgent} %{NOTSPACE:cookie} %{NOTSPACE:referer} %{NOTSPACE:requestHost} %{NUMBER:response} %{NUMBER:subresponse} %{NUMBER:win32response} %{NUMBER:bytesSent} %{NUMBER:bytesReceived} %{NUMBER:timetaken}",
+        "grok_pattern": "%{TIMESTAMP_ISO8601:log_timestamp} %{WORD:serviceName} %{SERVERNAME:serverName} %{IP:serverIP} %{WORD:method} %{URIPATH:uriStem} %{NOTSPACE:uriQuery} %{NUMBER:port;int} %{NOTSPACE:username} %{IPORHOST:clientIP} %{NOTSPACE:protocolVersion} %{NOTSPACE:userAgent} %{NOTSPACE:cookie} %{NOTSPACE:referer} %{NOTSPACE:requestHost} %{NUMBER:response;int} %{NUMBER:subresponse;int} %{NUMBER:win32response;int} %{NUMBER:bytesSent;int} %{NUMBER:bytesReceived;int} %{NUMBER:timetaken;int}",
         "named_captures_only": false
       },
       "condition_type": "string",
