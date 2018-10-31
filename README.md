@@ -6,7 +6,6 @@ In this example, the field log_timestamp is also converted from unmarked UTC to 
 
 - I haven't handled `C:/Windows/System32/LogFiles/HTTPERR/*.log` yet. 
 - - [Error logging in HTTP APIs](https://support.microsoft.com/en-us/help/820729/error-logging-in-http-apis) 
-- For whatever reason, I'm unable to overwrite the field timestamp
 
 # Configure IIS to get the logs in the correct format
 
@@ -109,21 +108,22 @@ when
             ignore_case: true)
     AND has_field(field: "log_timestamp")
 then
-    let correct_timestamp = parse_date(
+    let set_timezone = parse_date(
 								value: to_string($message.log_timestamp),
 								pattern: "yyyy-MM-dd HH:mm:ss",
 								timezone: "UTC");
-    set_field("log_timestamp", format_date(
-								value: correct_timestamp,
+	let correct_timestamp = format_date(
+								value: set_timezone,
 								format: "yyyy-MM-dd HH:mm:ss Z",
-								timezone: "Europe/Stockholm"));
+								timezone: "Europe/Stockholm");
+    set_field("log_timestamp", correct_timestamp);
 end
 ```
 
 ### Set timestamps to timestamps from log, not from time of harvest
 
 *For this rule to work, __Pipeline Processor__ must run after __Message Filter Chain__ (edit this under __System - Configuration__ by pressing __Update__ below the table showing the current order and move __Pipeline Processor__ to after __Message Filter Chain__*
-The rule doesn't give any errors anymore, but it doesn't change the value for the field __timestamp__ for some reason.
+
 
 ```
 rule "correct timestamp for logs from IIS"
@@ -135,23 +135,10 @@ when
     AND has_field(field: "log_timestamp")
 then
     let log_timestamp = $message.log_timestamp;
-    let timestamp = $message.timestamp;
-    debug(value: concat(
-                    first: "timestamp before changing: ",
-                    second: to_string(timestamp)));
-	debug(value: concat(
-                    first: "log_timestamp: ",
-                    second: to_string(log_timestamp)));
-					
-	set_field("timestamp", format_date(
-								value: to_date(log_timestamp),
-								format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
-	
-	debug(value: concat(
-                    first: "After changing: ",
-	                second: format_date(
-								value: to_date(timestamp),
-								format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ")));
+	let new_timestamp = parse_date( value: to_string(log_timestamp),
+									pattern: "yyyy-MM-dd HH:mm:ss Z");
+								
+	set_field("timestamp", new_timestamp);
 end
 ```
 
