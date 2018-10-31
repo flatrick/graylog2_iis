@@ -90,7 +90,13 @@ _The JSON-formatted importable extractor_
 
 ## Pipelines
 
+In this example, I'm using two rules in two stages;
+1. The first one modifies the value log_timestamp so it's stored as a datetime object containing also containing timezone, I also change the timezone to my local timezone to make it easier to read
+1. The second pipeline uses the now corrected log_timestamp as a source to set the field timestamp, otherwise timestamp will be referring to when Filebeats sent the event to Graylog and not when it actually happened. Since IIS can wait a while before writing to it's logfile, this means that the data we get will be slightly unreliable (and/or if Filebeat for whatever reason wasn't running for a while, all of the new events that it'll send later will have the same timestamp, even though the events could be from different days!)
+
 ### Set correct time for log_timestamps
+
+For the the first __Stage__ _(Stage 0)_, we will set the log_timestamp with the time converted to our own timezone _(Europe/Stockolm)_.
 
 *For this rule to work, __Pipeline Processor__ must run after __Message Filter Chain__ (edit this under __System - Configuration__ by pressing __Update__ below the table showing the current order and move __Pipeline Processor__ to after __Message Filter Chain__*
 
@@ -121,6 +127,8 @@ end
 ```
 
 ### Set timestamp to the timestamp from the logfile
+
+For the the second __Stage__ _(Stage 1)_, we will set the timestamp we just corrected in Stage 0 _(Graylog will store it in UTC-format)_
 
 *For this rule to work, __Pipeline Processor__ must run after __Message Filter Chain__ (edit this under __System - Configuration__ by pressing __Update__ below the table showing the current order and move __Pipeline Processor__ to after __Message Filter Chain__*  
 
