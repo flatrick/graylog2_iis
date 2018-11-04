@@ -2,6 +2,11 @@
 Configuration to get IIS logs into [Graylog2](https://github.com/Graylog2/graylog2-server) using [Graylog2 collector-sidecar](https://github.com/Graylog2/collector-sidecar) ([FileBeats](https://www.elastic.co/products/beats/filebeat)), after which all fields are extracted from the message into searchable fields.
 In this example, the field log_timestamp is also converted from unmarked UTC to Europe/Stockholm.
 
+## Notes
+This guide is written with IIS 10 in mind, so any older or newer versions of IIS might require some adaptation to work.
+For example, the field StreamID in the error-log refers to a HTTP/2.0 (SPDY) feature and HTTP/2.0 is an entirely new feature in IIS 10.
+I used the graylog-2.4.6-1.ova image while creating this guide.
+
 ## Currently missing or not working
 
 - I haven't handled `C:/Windows/System32/LogFiles/HTTPERR/*.log` yet. 
