@@ -1,5 +1,5 @@
 # graylog2_iis
-Configuration to get IIS logs into [Graylog2](https://github.com/Graylog2/graylog2-server) using [Graylog2 collector-sidecar](https://github.com/Graylog2/collector-sidecar) (FileBeats), after which all fields are extracted from the message into searchable fields.
+Configuration to get IIS logs into [Graylog2](https://github.com/Graylog2/graylog2-server) using [Graylog2 collector-sidecar](https://github.com/Graylog2/collector-sidecar) ([FileBeats](https://www.elastic.co/products/beats/filebeat)), after which all fields are extracted from the message into searchable fields.
 In this example, the field log_timestamp is also converted from unmarked UTC to Europe/Stockholm.
 
 ## Currently missing or not working
