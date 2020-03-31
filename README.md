@@ -10,7 +10,7 @@ I used the graylog-2.4.6-1.ova image while creating this guide.
 ## Currently missing or not working
 
 - I haven't handled `C:/Windows/System32/LogFiles/HTTPERR/*.log` yet. 
-- - [Error logging in HTTP APIs](https://support.microsoft.com/en-us/help/820729/error-logging-in-http-apis) 
+  - [Error logging in HTTP APIs](https://support.microsoft.com/en-us/help/820729/error-logging-in-http-apis) 
 - Since I've named some of the fields from the access-logs with generic names (PORT for s-port/server-port), when I'm now trying to add a GROK-pattern for the error-file I've found that I now need to rename the previous ones for it to make sense together.
 
 # Configure IIS to get the logs in the correct format
@@ -131,8 +131,9 @@ end
 
 # Info
 
-- http://www.nsi.bg/nrnm/Help/iisHelp/iis/htm/core/iiintlg.htm 
-- https://docs.microsoft.com/en-us/windows/desktop/http/w3c-logging 
+- [Logging Properties Reference](http://www.nsi.bg/nrnm/Help/iisHelp/iis/htm/core/iiintlg.htm)
+- [Microsoft Docs - W3C Logging](https://docs.microsoft.com/en-us/windows/desktop/http/w3c-logging)
+- [LOG FORMATS – A (MOSTLY) COMPLETE GUIDE](https://www.graylog.org/post/log-formats-a-complete-guide)
 
 By adding the keyword __;int__ at the end of grok-patterns, we're telling Graylog that this field is to be stored as integers, without this hint, it'll most certainly store it as a string and then statistics won't work on those fields.
 
