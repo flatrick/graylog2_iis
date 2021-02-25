@@ -46,6 +46,7 @@ Then click on __Get started__ to create the extractor described in the table bel
 |Setting|Choice
 |-|-|
 |Extractor type|Grok pattern
+|Named capture only|If you don't want to recursively extract fields from GROK pattern and put the explicitly named captures into the message
 |Source field|message
 |Grok pattern|`%{TIMESTAMP_ISO8601:log_timestamp} %{WORD:serviceName} %{SERVERNAME:serverName} %{IP:serverIP} %{WORD:method} %{URIPATH:uriStem} %{NOTSPACE:uriQuery} %{NUMBER:port;int} %{NOTSPACE:username} %{IPORHOST:clientIP} %{NOTSPACE:protocolVersion} %{NOTSPACE:userAgent} %{NOTSPACE:cookie} %{NOTSPACE:referer} %{NOTSPACE:requestHost} %{NUMBER:response;int} %{NUMBER:subresponse;int} %{NUMBER:win32response;int} %{NUMBER:bytesSent;int} %{NUMBER:bytesReceived;int} %{NUMBER:timetaken;int}`
 |Condition|Only attempt extraction if field matches regular expression
